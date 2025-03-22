@@ -54,7 +54,7 @@ func scytaleCipher(message string, shift int) string {
 		length++
 	}
 	rows := length / shift
-	fmt.Println(rows) // ✅ Prevents "declared and not used" error
+	fmt.Println(rows) 
 
 	result := make([]byte, length)
 	for i := 0; i < length; i++ {
