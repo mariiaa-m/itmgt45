@@ -53,8 +53,6 @@ func scytaleCipher(message string, shift int) string {
 		message += "_"
 		length++
 	}
-	rows := length / shift
-	fmt.Println(rows) 
 
 	result := make([]byte, length)
 	for i := 0; i < length; i++ {
@@ -67,21 +65,25 @@ func scytaleCipher(message string, shift int) string {
 // Scytale decipher
 func scytaleDecipher(message string, shift int) string {
 	length := len(message)
-	rows := length / shift
 	result := make([]byte, length)
+
 	for i := 0; i < length; i++ {
-		originalIndex := (i%rows)*shift + (i / rows)
-		result[originalIndex] = message[i]
+		originalIndex := (i % shift) * (length / shift) + (i / shift)
+		result[i] = message[originalIndex]
 	}
+
 	return string(result)
 }
 
 func main() {
-	// Test cases
-	fmt.Println(shiftLetter("A", 2))                   // "C"
-	fmt.Println(caesarCipher("HELLO WORLD", 3))        // "KHOOR ZRUOG"
-	fmt.Println(shiftByLetter("B", "K"))               // "L"
-	fmt.Println(vigenereCipher("HELLO WORLD", "KEY"))  // "RIJVS UYVJN"
-	fmt.Println(scytaleCipher("INFORMATION_AGE", 3))   // "IMNNA_FTAOIGROE"
-	fmt.Println(scytaleDecipher("IMNNA_FTAOIGROE", 3)) // "INFORMATION_AGE"
+	fmt.Println(shiftLetter("Z", 1))          
+	fmt.Println(shiftLetter("M", 13))         
+	fmt.Println(shiftLetter("X", 3))        
+	fmt.Println(caesarCipher("XYZ", 3))       
+	fmt.Println(caesarCipher("HELLO WORLD", 26)) 
+	fmt.Println(shiftByLetter("C", "C"))       
+	fmt.Println(shiftByLetter("X", "Y"))      
+	fmt.Println(vigenereCipher("HELLO WORLD", "KEY")) 
+	fmt.Println(vigenereCipher("XYZ", "ABC"))  
+	fmt.Println(scytaleDecipher("IMNNAF_TAOIGROE", 3)) 
 }
