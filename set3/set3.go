@@ -1,73 +1,96 @@
-// Placeholder
 package main
 
-func main() {
-	// Placeholder
-}
+import (
+	"fmt"
+	"strings"
+	"sampledata"
+)
 
 // Relationship status
-//
-// Let's pretend that you are building a new app with social media functionality.
-// Users can have relationships with other users.
-//
-// The two guidelines for describing relationships are:
-// 1. Any user can follow any other user.
-// 2. If two users follow each other, they are considered friends.
-//
-// This function describes the relationship that two users have with each other.
-//
-// Please see the sample data for examples of `socialGraph`.
-//
-// Params:
-// - fromMember, the subject member
-// - toMember, the object member
-// - socialGraph, the relationship data
-//
-// Returns:
-// - "follower" if fromMember follows toMember; "followed by" if fromMember is followed by toMember; "friends" if fromMember and toMember follow each other; "no relationship otherwise."
-func relationshipStatus(fromMember string, toMember string, socialGraph map[string]map[string]interface{}) string {
-	// Replace this with your code
-	return ""
+func relationshipStatus(fromMember string, toMember string, socialGraph map[string]map[string]string) string {
+	// Check if fromMember follows toMember
+	following := socialGraph[fromMember]["following"]
+	follows := false
+	for _, followee := range strings.Split(following, ",") {
+		if followee == toMember {
+			follows = true
+			break
+		}
+	}
+
+	// Check if toMember follows fromMember
+	followedBy := socialGraph[toMember]["following"]
+	followedByFrom := false
+	for _, follower := range strings.Split(followedBy, ",") {
+		if follower == fromMember {
+			followedByFrom = true
+			break
+		}
+	}
+
+	// Determine relationship status
+	if follows && followedByFrom {
+		return "friends"
+	} else if follows {
+		return "follower"
+	} else if followedByFrom {
+		return "followed by"
+	} else {
+		return "no relationship"
+	}
 }
 
 // Tic tac toe
-//
-// Tic Tac Toe is a common paper-and-pencil game.
-// Players must attempt to draw a line of their symbol across a grid.
-// The player that does this first is considered the winner.
-//
-// This function evaluates a Tic Tac Toe game board and returns the winner.
-//
-// Please see the sample data for examples of `board`.
-//
-// Params:
-// - board, the representation of the Tic Tac Toe board as a square slice of slices of strings. The size of the slice will range between 3x3 to 6x6. The board will never have more than 1 winner. There will only ever be 2 unique symbols at the same time.
-//
-// Returns:
-// - the symbol of the winner, or "NO WINNER" if there is no winner.
 func ticTacToe(board [][]string) string {
-	// Replace this with your code
-	return ""
+	// Check rows for a winner
+	for _, row := range board {
+		if row[0] != "" && row[0] == row[1] && row[1] == row[2] {
+			return row[0]
+		}
+	}
+
+	// Check columns for a winner
+	for i := 0; i < len(board); i++ {
+		if board[0][i] != "" && board[0][i] == board[1][i] && board[1][i] == board[2][i] {
+			return board[0][i]
+		}
+	}
+
+	// Check diagonals for a winner
+	if board[0][0] != "" && board[0][0] == board[1][1] && board[1][1] == board[2][2] {
+		return board[0][0]
+	}
+	if board[0][2] != "" && board[0][2] == board[1][1] && board[1][1] == board[2][0] {
+		return board[0][2]
+	}
+
+	// No winner
+	return "NO WINNER"
 }
 
 // ETA
-//
-// A shuttle van service is tasked to travel one way along a predefined circular route.
-// The route is divided into several legs between stops.
-// The route is fully connected to itself.
-//
-// This function returns how long it will take the shuttle to arrive at a stop after leaving anothe rstop.
-//
-// Please see the sample data for examples of `routeMap`.
-//
-// Params:
-// - firstStop, the stop that the shuttle will leave
-// - secondStop, the stop that the shuttle will arrive at
-// - routeMap, the data describing the routes
-//
-// Returns:
-// - the time that it will take the shuttle to travel from firstStop to secondStop
 func eta(firstStop string, secondStop string, routeMap map[string]map[string]int) int {
-	// Replace this with your code
+	// Try the direct route (firstStop to secondStop)
+	if time, exists := routeMap[firstStop+","+secondStop]; exists {
+		return time["travel_time_mins"]
+	}
+
+	// Try the reverse route (secondStop to firstStop)
+	if time, exists := routeMap[secondStop+","+firstStop]; exists {
+		return time["travel_time_mins"]
+	}
+
+	// If no route found, return 0
 	return 0
+}
+
+func main() {
+	// Test the relationshipStatus function
+	fmt.Println(relationshipStatus("@joaquin", "@chums", sampledata.SocialGraph))
+
+	// Test the ticTacToe function
+	fmt.Println(ticTacToe(sampledata.Board))
+
+	// Test the eta function
+	fmt.Println(eta("upd", "admu", sampledata.RouteMap))
 }

@@ -1,6 +1,6 @@
 package sampledata
 
-var socialGraph map[string]map[string]string = map[string]map[string]string{
+var SocialGraph map[string]map[string]string = map[string]map[string]string{
 	"@bongolpoc": {
 		"first_name": "Joselito",
 		"last_name":  "Olpoc",
@@ -33,13 +33,13 @@ var socialGraph map[string]map[string]string = map[string]map[string]string{
 	},
 }
 
-var board [][]string = [][]string{
+var Board [][]string = [][]string{
 	{"X", "X", "O"},
 	{"O", "X", "O"},
 	{"", "O", "X"},
 }
 
-var routeMap map[string]map[string]int = map[string]map[string]int{
+var RouteMap map[string]map[string]int = map[string]map[string]int{
 	"upd,admu": {
 		"travel_time_mins": 10,
 	},
